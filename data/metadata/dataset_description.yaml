@@ -1,0 +1,161 @@
+case:
+  name: multicolor_helical_H7_H6_H5
+  scheme: HGHG
+  configuration: cascaded multicolor
+  radiator_polarization: helical
+  beamline_layout: FERMI_H7H6H5_6RAD_3RUN
+  lattice_file: FERMI_H7H6H5_6RAD_3RUN.lat
+  author: Ali Soleimani
+  date_simulated: 2026-03-19
+  description: |
+    Reproducibility metadata for a multicolor helical HGHG simulation with
+    three output branches at harmonics 7, 6, and 5 of a 360 nm seed.
+    The branches are propagated through different radiator sections and are
+    analyzed at the end of RAD6 using final field snapshots and z-evolution
+    diagnostics.
+
+beam_and_seed:
+  seed_wavelength_nm: 360.0
+  target_harmonics: [7, 6, 5]
+
+numerics:
+  ngrid: 301
+  dgrid_m: 0.002
+  nslice: 556
+
+branches:
+  - id: A
+    label: H7
+    harmonic: 7
+    output_wavelength_nm: 51.4286
+    input_file: RUNA_H7_then_propagate_to_RAD6.in
+    propagation_section:
+      - RAD1_to_RAD2
+      - RAD3_to_RAD6
+    final_position: end_of_RAD6
+    files:
+      field_snapshot: FIELD_END_RAD6_BRANCH_A.fld.h5
+      z_evolution_files:
+        - A_H7_RAD12.out.h5
+        - A_PROP_THROUGH_RAD36.out.h5
+
+  - id: B
+    label: H6
+    harmonic: 6
+    output_wavelength_nm: 60.0
+    input_file: RUNB_H6_branch_from_RAD2_to_RAD6.in
+    propagation_section:
+      - RAD3_to_RAD4
+      - RAD5_to_RAD6
+    final_position: end_of_RAD6
+    files:
+      field_snapshot: FIELD_END_RAD6_BRANCH_B.fld.h5
+      z_evolution_files:
+        - B_H6_RAD34.out.h5
+        - B_PROP_THROUGH_RAD56.out.h5
+
+  - id: C
+    label: H5
+    harmonic: 5
+    output_wavelength_nm: 72.0
+    input_file: RUNC_H5_branch_from_RAD4.in
+    propagation_section:
+      - RAD5_to_RAD6
+    final_position: end_of_RAD6
+    files:
+      field_snapshot: FIELD_END_RAD6_BRANCH_C.fld.h5
+      z_evolution_files:
+        - C_H5_RAD56.out.h5
+
+file_types:
+  fld_h5:
+    description: |
+      Full complex radiation field snapshot at a single longitudinal position,
+      stored slice-by-slice on the transverse grid.
+    used_for:
+      - spectrum
+      - transverse_profile
+      - coherent_transverse_field
+      - final_field_analysis
+
+  out_h5:
+    description: |
+      Longitudinal evolution diagnostics along a beamline section, including
+      quantities such as zplot and power.
+    used_for:
+      - final_temporal_profile
+      - peak_power
+      - pulse_energy
+      - fwhm
+      - power_vs_z
+      - energy_vs_z
+      - branch_evolution
+
+software_environment:
+  cluster: kalculus
+  os: RHEL/CentOS
+  genesis:
+    version: 4.6.11
+    module: software/genesis-4.6.11
+    type: Genesis 1.3 Version 4
+  post_processing:
+    language: MATLAB
+    version: R2024a
+    toolboxes_required: []
+
+raw_data_access:
+  location: data/raw/
+  included_in_repository: false
+  doi: ""
+  note: Raw HDF5 files must be copied manually into data/raw/.
+
+reproduction:
+  entry_point: workflow/run_all.m
+  command: matlab -batch "run('workflow/run_all.m')"
+
+outputs:
+  temporal_profiles:
+    - results/figures/final_pulses_all.png
+    - results/figures/temporal_H7.png
+    - results/figures/temporal_H6.png
+    - results/figures/temporal_H5.png
+
+  spectra:
+    - results/figures/spectrum_comparison.png
+
+  transverse_profiles:
+    - results/figures/transverse_H7.png
+    - results/figures/transverse_H6.png
+    - results/figures/transverse_H5.png
+
+  power_along_z:
+    - results/figures/power_along_z_peak_all.png
+    - results/figures/power_along_z_energy_all.png
+    - results/figures/power_along_z_H7.png
+    - results/figures/power_along_z_H6.png
+    - results/figures/power_along_z_H5.png
+
+  summary_table:
+    path: results/tables/summary.csv
+    columns:
+      - branch
+      - wavelength_nm
+      - peak_power_W
+      - pulse_energy_J
+      - fwhm_fs
+
+current_results:
+  H7:
+    peak_power_W: 7.673356e+07
+    pulse_energy_J: 2.784912e-06
+    fwhm_fs: 34.647
+
+  H6:
+    peak_power_W: 1.237311e+08
+    pulse_energy_J: 6.337136e-06
+    fwhm_fs: 52.621
+
+  H5:
+    peak_power_W: 1.705777e+08
+    pulse_energy_J: 9.646215e-06
+    fwhm_fs: 48.198

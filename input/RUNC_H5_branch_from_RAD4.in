@@ -1,0 +1,79 @@
+&setup
+  rootname = RUNC
+  lattice  = FERMI_H7H6H5_6RAD_3RUN.lat
+  beamline = NOP
+
+  lambda0  = 3.60000e-07
+  gamma0   = 2415.85
+  delz     = 0.05
+
+  seed      = 43617235
+  shotnoise = false
+  one4one   = false
+
+  npart = 16384
+  nbins = 16
+&end
+
+&time
+  slen   = 2.00000e-04
+  sample = 1
+  time   = true
+&end
+
+# Match import frame (beam saved when harmonic=6 was active)
+&alter_setup
+  rootname = C_MATCH_IMPORT_FRAME
+  beamline = NOP
+  harmonic = 6
+&end
+
+&importbeam
+  file = BEAM_AT_RAD4.par.h5
+&end
+
+# Fundamental field container
+&field
+  lambda = 3.60000e-07
+  power  = 0.0
+  dgrid  = 2.00e-3
+  ngrid  = 301
+&end
+
+# Bookkeeping conversion: H6 -> fundamental (NOP)
+&alter_setup
+  rootname    = C_TO_FUND_FROM_H6
+  beamline    = NOP
+  subharmonic = 6
+&end
+
+&track
+  output_step = 1
+&end
+
+# Run RAD5-6 at H5 (72 nm)
+&alter_setup
+  rootname = C_H5_RAD56
+  beamline = FEL1_2RAD_H5
+  harmonic = 5
+  delz     = 0.01375
+&end
+
+&field
+  lambda = 7.200000000000e-08
+  power  = 0.0
+  dgrid  = 2.00e-3
+  ngrid  = 301
+&end
+
+&track
+  output_step = 1
+&end
+
+&write
+  field = FIELD_END_RAD6_BRANCH_C
+  beam  = BEAM_END_RAD6_BRANCH_C
+&end
+
+&stop
+&end

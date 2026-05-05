@@ -1,0 +1,75 @@
+#=======================================================================================
+#  HGHG sequential 3-color (GENESIS-4) with 3-run branching
+#
+#  Beamline blocks:
+#   FEL1_MOD      : modulator + chicane + matching
+#   FEL1_2RAD_H7  : RAD1-2 (H7 tuned)
+#   FEL1_2RAD_H6  : RAD3-4 (H6 tuned)
+#   FEL1_2RAD_H5  : RAD5-6 (H5 tuned)
+#   FEL1_4RAD_36  : RAD3-6 (for propagation without extra alters)
+#   NOP           : near-zero-length beamline for harmonic bookkeeping only
+#=======================================================================================
+
+# --- Generic dumps ---
+ALLDUMP: MARK = {dumpbeam = 1, dumpfield = 1};
+
+#============================== MODULATOR SECTION ==============================
+MOD_BEFORE: MARK = {dumpbeam = 1};
+MOD_AFTER:  MARK = {dumpbeam = 1};
+MOD_AFTERC: MARK = {dumpbeam = 1};
+
+MOD_U1:   UNDULATOR = {lambdau = 0.10, nwig = 30, aw = 6.39419};
+
+MOD_D1:  DRIFT      = {l = 0.200};
+MOD_C1:  CHICANE    = {l = 1.3, lb = 0.15, ld = 0.35, delay = 2.50000e-05};
+MOD_D2:  DRIFT      = {l = 0.300};
+MOD_Q1:  QUADRUPOLE = {l = 0.2, k1 = 0.705};
+MOD_D3:  DRIFT      = {l = 0.500};
+
+FEL1_MOD: LINE = {MOD_BEFORE, MOD_U1, MOD_AFTER, MOD_D1, MOD_C1, MOD_AFTERC,
+                  MOD_D2, MOD_Q1, MOD_D3, ALLDUMP};
+
+#============================== RADIATOR SECTION (6 modules) ==========================
+RAD_D1: DRIFT = {l=0.440};
+RAD_D2: DRIFT = {l=0.550};
+
+RAD_Q1: QUADRUPOLE = {l=0.22, k1=-0.68};
+RAD_Q2: QUADRUPOLE = {l=0.22, k1= 0.70};
+
+# --- Undulators ---
+# H7 modules (51.428571 nm = 360nm/7)
+RAD_U1: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.148761240737, helical=true, kx=0.5, ky=0.5};
+RAD_U2: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.148761240737, helical=true, kx=0.5, ky=0.5};
+
+# H6 modules (60.000000 nm = 360nm/6)
+RAD_U3: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.425465453973, helical=true, kx=0.5, ky=0.5};
+RAD_U4: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.425465453973, helical=true, kx=0.5, ky=0.5};
+
+# H5 modules (72.000000 nm = 360nm/5)
+RAD_U5: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.778964976238, helical=true, kx=0.5, ky=0.5};
+RAD_U6: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.778964976238, helical=true, kx=0.5, ky=0.5};
+
+# --- Phase shifters ---
+# choose phi values later from your scan/optimization
+PS_H7: PHASESHIFTER = {l = 1e-20, phi = 1.6942};
+PS_H6: PHASESHIFTER = {l = 1e-20, phi = 0.0};
+
+# --- FODO cells + dumps ---
+RAD1: LINE = {RAD_U1, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
+RAD2: LINE = {RAD_U2, RAD_D1, RAD_Q2, RAD_D2, ALLDUMP};
+RAD3: LINE = {PS_H7, RAD_U3, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
+RAD4: LINE = {RAD_U4, RAD_D1, RAD_Q2, RAD_D2, ALLDUMP};
+RAD5: LINE = {PS_H6_H5, RAD_U5, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
+RAD6: LINE = {RAD_U6, ALLDUMP};
+
+# --- Segment beamlines ---
+FEL1_2RAD_H7: LINE = {RAD1, RAD2};
+FEL1_2RAD_H6: LINE = {RAD3, RAD4};
+FEL1_2RAD_H5: LINE = {RAD5, RAD6};
+
+# --- Combined propagation beamline (RAD3 -> RAD6) ---
+FEL1_4RAD_36: LINE = {RAD3, RAD4, RAD5, RAD6};
+
+# --- Zero-length beamline for field bookkeeping only ---
+NOP_MARK:  DRIFT = {l=1e-20};
+NOP:       LINE  = {NOP_MARK};

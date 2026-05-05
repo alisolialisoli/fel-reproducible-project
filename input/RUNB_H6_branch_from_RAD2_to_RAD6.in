@@ -1,0 +1,96 @@
+&setup
+  rootname = RUNB
+  lattice  = FERMI_H7H6H5_6RAD_3RUN.lat
+  beamline = NOP
+
+  lambda0  = 3.60000e-07
+  gamma0   = 2415.85
+  delz     = 0.05
+
+  seed      = 43617235
+  shotnoise = false
+  one4one   = false
+
+  npart = 16384
+  nbins = 16
+&end
+
+&time
+  slen   = 2.00000e-04
+  sample = 1
+  time   = true
+&end
+
+# Match import frame (beam saved when harmonic=7 was active)
+&alter_setup
+  rootname = B_MATCH_IMPORT_FRAME
+  beamline = NOP
+  harmonic = 7
+&end
+
+&importbeam
+  file = BEAM_AT_RAD2.par.h5
+&end
+
+# Fundamental field container before subharmonic conversion
+&field
+  lambda = 3.60000e-07
+  power  = 0.0
+  dgrid  = 2.00e-3
+  ngrid  = 301
+&end
+
+# Bookkeeping conversion: H7 -> fundamental (NOP)
+&alter_setup
+  rootname    = B_TO_FUND_FROM_H7
+  beamline    = NOP
+  subharmonic = 7
+&end
+
+&track
+  output_step = 1
+&end
+
+# Run RAD3-4 at H6 (60 nm)
+&alter_setup
+  rootname = B_H6_RAD34
+  beamline = FEL1_2RAD_H6
+  harmonic = 6
+  delz     = 0.01375
+&end
+
+&field
+  lambda = 6.000000000000e-08
+  power  = 0.0
+  dgrid  = 2.00e-3
+  ngrid  = 301
+&end
+
+&track
+  output_step = 1
+&end
+
+# Checkpoint after RAD4 (for branching to H5)
+&write
+  beam  = BEAM_AT_RAD4
+  field = FIELD_AT_RAD4
+&end
+
+# Optional: propagate the H6-frame field through RAD5-6 without changing harmonic
+&alter_setup
+  rootname = B_PROP_THROUGH_RAD56
+  beamline = FEL1_2RAD_H5
+  delz     = 0.01375
+&end
+
+&track
+  output_step = 1
+&end
+
+&write
+  field = FIELD_END_RAD6_BRANCH_B
+  beam  = BEAM_END_RAD6_BRANCH_B
+&end
+
+&stop
+&end

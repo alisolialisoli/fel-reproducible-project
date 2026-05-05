@@ -1,0 +1,105 @@
+&setup
+  rootname = RUNA
+  lattice  = FERMI_H7H6H5_6RAD_3RUN.lat
+  beamline = FEL1_MOD
+
+  lambda0 = 3.60000e-07
+  gamma0  = 2415.85
+  delz    = 0.05
+
+  seed      = 43617235
+  shotnoise = false
+  one4one   = false
+
+  npart = 16384
+  nbins = 16
+
+  beam_global_stat  = true
+  field_global_stat = true
+&end
+
+&time
+  slen   = 2.00000e-04
+  sample = 1
+  time   = true
+&end
+
+&profile_gauss
+  label = seedprof
+  c0    = 3.0000e+07
+  s0    = 1.00000e-04
+  sig   = 8.656e-06
+&end
+
+&field
+  lambda     = 3.60000e-07
+  power      = @seedprof
+  dgrid      = 2.00e-3
+  ngrid      = 301
+  waist_size = 3.00000e-04
+  waist_pos  = 1.50000e+00
+&end
+
+&beam
+  gamma   = 2415.85
+  delgam  = 0.1566
+  current = 400.00
+
+  ex = 1.50000e-06
+  ey = 1.50000e-06
+
+  betax  = 7.514274
+  betay  = 12.290586
+  alphax = -0.067539
+  alphay =  0.223828
+&end
+
+# 1) MOD+CHICANE
+&track
+  output_step = 1
+&end
+
+# 2) RAD1-2 at H7 (51.428571 nm)
+&alter_setup
+  rootname = A_H7_RAD12
+  beamline = FEL1_2RAD_H7
+  harmonic = 7
+  delz     = 0.01375
+&end
+
+&field
+  lambda = 5.142857142857e-08
+  power  = 0.0
+  dgrid  = 2.00e-3
+  ngrid  = 301
+&end
+
+&track
+  output_step = 1
+&end
+
+# 3) Checkpoint after RAD2 (for branching)
+&write
+  beam  = BEAM_AT_RAD2
+  field = FIELD_AT_RAD2
+&end
+
+# 4) Propagate through RAD3-6 without changing harmonic (keeps H7 frame)
+&alter_setup
+  rootname = A_PROP_THROUGH_RAD36
+  beamline = FEL1_4RAD_36
+  delz     = 0.01375
+&end
+
+&track
+  output_step = 1
+&end
+
+# 5) Branch A output at end of RAD6
+&write
+  field = FIELD_END_RAD6_BRANCH_A
+  beam  = BEAM_END_RAD6_BRANCH_A
+&end
+
+&stop
+&end
