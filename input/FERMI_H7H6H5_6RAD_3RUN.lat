@@ -49,17 +49,12 @@ RAD_U4: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.425465453973, helical=true, kx
 RAD_U5: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.778964976238, helical=true, kx=0.5, ky=0.5};
 RAD_U6: UNDULATOR = {lambdau=0.055, nwig=44, aw=3.778964976238, helical=true, kx=0.5, ky=0.5};
 
-# --- Phase shifters ---
-# choose phi values later from your scan/optimization
-PS_H7: PHASESHIFTER = {l = 1e-20, phi = 1.6942};
-PS_H6: PHASESHIFTER = {l = 1e-20, phi = 0.0};
-
 # --- FODO cells + dumps ---
 RAD1: LINE = {RAD_U1, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
 RAD2: LINE = {RAD_U2, RAD_D1, RAD_Q2, RAD_D2, ALLDUMP};
-RAD3: LINE = {PS_H7, RAD_U3, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
+RAD3: LINE = {RAD_U3, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
 RAD4: LINE = {RAD_U4, RAD_D1, RAD_Q2, RAD_D2, ALLDUMP};
-RAD5: LINE = {PS_H6_H5, RAD_U5, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
+RAD5: LINE = {RAD_U5, RAD_D1, RAD_Q1, RAD_D2, ALLDUMP};
 RAD6: LINE = {RAD_U6, ALLDUMP};
 
 # --- Segment beamlines ---
