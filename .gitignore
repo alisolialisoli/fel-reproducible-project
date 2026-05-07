@@ -30,21 +30,7 @@ data/raw/*.h5
 data/processed/*
 !data/processed/.gitkeep
 
-# --------------------------------------------------
-# Generated figures
-# --------------------------------------------------
-results/figures/*.png
-results/figures/*.jpg
-results/figures/*.jpeg
-results/figures/*.pdf
-results/figures/*.svg
 
-# --------------------------------------------------
-# Generated tables
-# --------------------------------------------------
-results/tables/*.csv
-results/tables/*.txt
-results/tables/*.dat
 
 # --------------------------------------------------
 # Optional MATLAB binary data
