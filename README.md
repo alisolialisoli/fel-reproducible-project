@@ -58,7 +58,7 @@ Seed (360 nm)
 
                                           |- H6 branch -|------ to RAD6 ------->
 
-                                                        |---H5 branch---|------>
+                                                        |---H5 branch--|------>
 
 Outputs at the end of RAD6:
   H7 --> FIELD_END_RAD6_BRANCH_A.fld.h5
