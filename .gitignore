@@ -20,7 +20,7 @@ slurm-*.out
 slurm-*.err
 
 # --------------------------------------------------
-# Raw simulation data (too large for git)
+# Raw simulation data 
 # --------------------------------------------------
 data/raw/*.h5
 
