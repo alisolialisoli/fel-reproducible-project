@@ -106,7 +106,7 @@ software_environment:
 raw_data_access:
   location: data/raw/
   included_in_repository: false
-  doi: ""
+  doi: "10.5281/zenodo.20067372"
   note: Raw HDF5 files must be copied manually into data/raw/.
 
 reproduction:
