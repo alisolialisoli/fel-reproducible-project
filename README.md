@@ -66,7 +66,7 @@ Outputs at the end of RAD6:
   H5 --> FIELD_END_RAD6_BRANCH_C.fld.h5
 
 
-## Workflow
+**## Workflow**
 The complete analysis is executed through the main MATLAB script
 `workflow/run_all.m`, which serves as the entry point of the project. Starting
 from the raw GENESIS HDF5 output files stored in `data/raw/`, the workflow
