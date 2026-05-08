@@ -43,29 +43,6 @@ branches:
 All three branches are analyzed at the **end of RAD6**, using final radiation
 field snapshots and longitudinal evolution diagnostics produced by GENESIS 4.
 
-## Simulation setup overview
-
-```text
-Multicolor helical HGHG setup (schematic)
-
-Seed (360 nm)
-    |
-    v
----------     ---------     ---------------------------------------------------------------
-|  MOD  | --> |  R56  | --> | RAD1 | RAD2 | RAD3 | RAD4 | RAD5 | RAD6 |
----------     ---------     ---------------------------------------------------------------
-                            |- H7 branch -|------ propagate to RAD6 --------->
-
-                                          |- H6 branch -|------ to RAD6 ----->
-
-                                                        |-H5 branch --------->
-
-Outputs at the end of RAD6:
-  H7 --> FIELD_END_RAD6_BRANCH_A.fld.h5
-  H6 --> FIELD_END_RAD6_BRANCH_B.fld.h5
-  H5 --> FIELD_END_RAD6_BRANCH_C.fld.h5
-
-
 **## Workflow**
 The complete analysis is executed through the main MATLAB script
 `workflow/run_all.m`, which serves as the entry point of the project. Starting
@@ -111,5 +88,30 @@ logic, interpretation of the results, and validation of the outputs, was based
 on the author’s own simulation work and checks. In this sense, the LLM was used
 as a documentation and organization aid, not as a substitute for scientific
 analysis.
+
+## Simulation setup overview
+
+```text
+Multicolor helical HGHG setup (schematic)
+
+Seed (360 nm)
+    |
+    v
+---------     ---------     ---------------------------------------------------------------
+|  MOD  | --> |  R56  | --> | RAD1 | RAD2 | RAD3 | RAD4 | RAD5 | RAD6 |
+---------     ---------     ---------------------------------------------------------------
+                            |- H7 branch -|------ propagate to RAD6 --------->
+
+                                          |- H6 branch -|------ to RAD6 ----->
+
+                                                        |-H5 branch --------->
+
+Outputs at the end of RAD6:
+  H7 --> FIELD_END_RAD6_BRANCH_A.fld.h5
+  H6 --> FIELD_END_RAD6_BRANCH_B.fld.h5
+  H5 --> FIELD_END_RAD6_BRANCH_C.fld.h5
+
+
+
 
 
